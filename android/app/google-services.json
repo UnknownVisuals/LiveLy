@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "315728919953",
+    "firebase_url": "https://lively-88f25-default-rtdb.firebaseio.com",
+    "project_id": "lively-88f25",
+    "storage_bucket": "lively-88f25.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:315728919953:android:1cc51b760dbfc4dd3bae30",
+        "android_client_info": {
+          "package_name": "com.company.livelyapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsFi-OZcsrQw809GuEbAqC4nbA4-9XDig"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:315728919953:android:e24abe4e8627846a3bae30",
+        "android_client_info": {
+          "package_name": "com.example.lively"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsFi-OZcsrQw809GuEbAqC4nbA4-9XDig"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
