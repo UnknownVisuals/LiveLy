@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:lively/features/authentication/screens/login/login.dart';
+import 'package:lively/utils/theme.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,11 +12,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'LiveLy',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
+      theme: REYAppTheme.lightTheme,
       home: const LoginScreen(),
     );
   }
