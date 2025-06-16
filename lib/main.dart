@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lively/features/authentication/screens/login/login.dart';
-import 'package:lively/utils/theme.dart';
+import 'package:lively/utils/theme/theme.dart';
 
 void main() {
   runApp(const MyApp());

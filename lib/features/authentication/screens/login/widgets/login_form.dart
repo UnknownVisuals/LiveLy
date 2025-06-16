@@ -4,6 +4,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:lively/features/authentication/controllers/login_controller.dart';
 import 'package:lively/features/authentication/screens/password_config/forgot_password.dart';
 import 'package:lively/features/authentication/screens/signup/signup.dart';
+import 'package:lively/features/monitoring/screens/monitoring.dart';
 import 'package:lively/utils/constants/colors.dart';
 import 'package:lively/utils/constants/sizes.dart';
 import 'package:lively/utils/constants/text_string.dart';
@@ -85,7 +86,7 @@ class LoginForm extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () => Get.to(const MonitoringScreen()),
                   child: const Text(REYTexts.signIn),
                 ),
               ),

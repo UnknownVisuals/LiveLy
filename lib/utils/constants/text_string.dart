@@ -6,6 +6,7 @@ class REYTexts {
   static const String submit = "Submit";
   static const String appName = "LiveLy";
   static const String rContinue = "Continue";
+  static const String dashboardTitle = "Vital Signs Monitoring";
 
   // -- Authentication Forms
   static const String firstName = "First Name";
