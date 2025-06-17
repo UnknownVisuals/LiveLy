@@ -37,5 +37,5 @@ class MonitoringModel {
           : '--/--';
   String get oxygenSaturationString =>
       oxygenSaturation?.toInt().toString() ?? '--';
-  String get temperatureString => temperature?.toStringAsFixed(1) ?? '--';
+  String get temperatureString => temperature?.toStringAsFixed(2) ?? '--';
 }

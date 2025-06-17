@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -6,41 +7,37 @@ import 'package:lively/features/monitoring/models/monitoring_model.dart';
 import 'package:lively/utils/popups/snackbar.dart';
 
 class MonitoringController extends GetxController {
-  final Rx<MonitoringModel> _data = MonitoringModel().obs;
-  final RxBool _isLoading = true.obs;
-  final RxString _error = ''.obs;
+  final Rx<MonitoringModel> data = MonitoringModel().obs;
+  final RxBool isLoading = true.obs;
+  final RxString error = ''.obs;
 
   final DatabaseReference _ref = FirebaseDatabase.instance.ref(
     'tekanan_darah/latest',
   );
   StreamSubscription<DatabaseEvent>? _subscription;
 
-  MonitoringModel get data => _data.value;
-  bool get isLoading => _isLoading.value;
-  String get error => _error.value;
-
   List<Map<String, dynamic>> get cards => [
     {
       'icon': Iconsax.activity,
-      'value': data.heartRateString,
+      'value': data.value.heartRateString,
       'unit': 'bpm',
       'label': 'Heart Rate',
     },
     {
       'icon': Iconsax.heart_circle,
-      'value': data.bloodPressure,
+      'value': data.value.bloodPressure,
       'unit': 'mmHg',
       'label': 'Blood Pressure',
     },
     {
       'icon': Iconsax.cloud,
-      'value': data.oxygenSaturationString,
+      'value': data.value.oxygenSaturationString,
       'unit': '%',
       'label': 'Oxygen',
     },
     {
       'icon': Iconsax.sun,
-      'value': data.temperatureString,
+      'value': data.value.temperatureString,
       'unit': '°C',
       'label': 'Temperature',
     },
@@ -58,17 +55,33 @@ class MonitoringController extends GetxController {
     super.onClose();
   }
 
+  void refreshData() {
+    isLoading.value = true;
+    error.value = '';
+    _subscription?.cancel();
+    _startListening();
+  }
+
   void _startListening() {
     _subscription = _ref.onValue.listen(
       (event) {
         if (event.snapshot.exists) {
           final json = Map<String, dynamic>.from(event.snapshot.value as Map);
-          _data.value = MonitoringModel.fromJson(json);
-          _isLoading.value = false;
-          _error.value = '';
+          data.value = MonitoringModel.fromJson(json);
+          isLoading.value = false;
+          error.value = '';
+
+          checkVitals(
+            Get.context!,
+            data.value.temperature ?? 0,
+            data.value.heartRate?.toInt() ?? 0,
+            data.value.oxygenSaturation?.toInt() ?? 0,
+            data.value.systolicBP?.toInt() ?? 0,
+            data.value.diastolicBP?.toInt() ?? 0,
+          );
         } else {
-          _error.value = 'No data found';
-          _isLoading.value = false;
+          error.value = 'No data found';
+          isLoading.value = false;
           REYLoaders.warningSnackBar(
             title: 'Warning',
             message: 'No monitoring data found.',
@@ -76,8 +89,8 @@ class MonitoringController extends GetxController {
         }
       },
       onError: (error) {
-        _error.value = error.toString();
-        _isLoading.value = false;
+        this.error.value = error.toString();
+        isLoading.value = false;
         REYLoaders.errorSnackBar(
           title: 'Error',
           message: 'Failed to load monitoring data.',
@@ -86,11 +99,23 @@ class MonitoringController extends GetxController {
     );
   }
 
-  @override
-  void refresh() {
-    _isLoading.value = true;
-    _error.value = '';
-    _subscription?.cancel();
-    _startListening();
+  void checkVitals(
+    BuildContext context,
+    double temperature,
+    int heartRate,
+    int oxygenSaturation,
+    int systolicBP,
+    int diastolicBP,
+  ) {
+    if (temperature > 37.5 ||
+        heartRate > 100 ||
+        oxygenSaturation < 95 ||
+        systolicBP > 130 ||
+        diastolicBP > 90) {
+      REYLoaders.warningSnackBar(
+        title: 'Warning',
+        message: 'Abnormal vital signs detected!',
+      );
+    }
   }
 }

@@ -91,21 +91,15 @@ class LoginForm extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed:
-                      loginController.isLoading.value
-                          ? null
-                          : () {
-                            if (formKey.currentState!.validate()) {
-                              loginController.loginWithEmail(
-                                emailController.text,
-                                passwordController.text,
-                              );
-                            }
-                          },
-                  child:
-                      loginController.isLoading.value
-                          ? const CircularProgressIndicator()
-                          : const Text(REYTexts.signIn),
+                  onPressed: () {
+                    if (formKey.currentState!.validate()) {
+                      loginController.loginWithEmail(
+                        emailController.text,
+                        passwordController.text,
+                      );
+                    }
+                  },
+                  child: const Text(REYTexts.signIn),
                 ),
               ),
               const SizedBox(height: REYSizes.spaceBtwItems),
@@ -125,5 +119,3 @@ class LoginForm extends StatelessWidget {
     );
   }
 }
-              // Create Account Button
-

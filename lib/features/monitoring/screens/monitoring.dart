@@ -3,7 +3,9 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:lively/features/authentication/controllers/login_controller.dart';
 import 'package:lively/features/monitoring/controllers/monitoring_controller.dart';
+import 'package:lively/features/monitoring/screens/widgets/logout_dialog.dart';
 import 'package:lively/features/monitoring/screens/widgets/monitoring_card.dart';
+import 'package:lively/utils/constants/colors.dart';
 import 'package:lively/utils/constants/image_string.dart';
 import 'package:lively/utils/constants/sizes.dart';
 import 'package:lively/utils/constants/text_string.dart';
@@ -13,7 +15,7 @@ class MonitoringScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(MonitoringController());
+    final monitoringController = Get.put(MonitoringController());
     final loginController = Get.find<LoginController>();
 
     return Scaffold(
@@ -25,25 +27,7 @@ class MonitoringScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              Get.dialog(
-                AlertDialog(
-                  title: const Text('Logout Confirmation'),
-                  content: const Text('Are you sure you want to log out?'),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Get.back(),
-                      child: const Text('Cancel'),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Get.back();
-                        loginController.logout();
-                      },
-                      child: const Text('Logout'),
-                    ),
-                  ],
-                ),
-              );
+              Get.dialog(LogoutDialog(loginController: loginController));
             },
             icon: const Icon(Iconsax.logout),
           ),
@@ -62,59 +46,30 @@ class MonitoringScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: REYSizes.spaceBtwSections),
 
-                // Error message
-                Obx(() {
-                  if (controller.error.isEmpty) return const SizedBox.shrink();
-                  return Container(
-                    padding: const EdgeInsets.all(REYSizes.sm),
-                    margin: const EdgeInsets.only(
-                      bottom: REYSizes.spaceBtwItems,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.red.shade100,
-                      borderRadius: BorderRadius.circular(REYSizes.sm),
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(Iconsax.warning_2, color: Colors.red.shade700),
-                        const SizedBox(width: REYSizes.xs),
-                        Expanded(
-                          child: Text(
-                            controller.error,
-                            style: TextStyle(color: Colors.red.shade700),
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: controller.refresh,
-                          icon: Icon(
-                            Iconsax.refresh,
-                            color: Colors.red.shade700,
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                }),
-
-                // Expanded ListView takes remaining vertical space
+                // Cards Section
                 Expanded(
                   child: Obx(() {
-                    if (controller.isLoading) {
-                      return const Center(child: CircularProgressIndicator());
+                    if (monitoringController.isLoading.value) {
+                      return const Center(
+                        child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation(REYColors.primary),
+                        ),
+                      );
                     }
 
                     return RefreshIndicator(
-                      onRefresh: () async => controller.refresh(),
+                      color: REYColors.primary,
+                      onRefresh: () async => monitoringController.refreshData(),
                       child: ListView.builder(
-                        itemCount: controller.cards.length,
+                        itemCount: monitoringController.cards.length,
                         itemBuilder: (context, index) {
-                          final card = controller.cards[index];
+                          final card = monitoringController.cards[index];
                           return Padding(
                             padding: const EdgeInsets.only(
                               bottom: REYSizes.spaceBtwItems,
                             ),
                             child: SizedBox(
-                              height: 120,
+                              height: 150,
                               child: MonitoringCard(
                                 icon: card['icon'],
                                 value: card['value'],
