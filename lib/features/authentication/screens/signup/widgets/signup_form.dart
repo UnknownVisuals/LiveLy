@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:intl/intl.dart';
 import 'package:lively/features/authentication/controllers/signup_controller.dart';
-import 'package:lively/features/authentication/screens/signup/verify_email.dart';
 import 'package:lively/features/authentication/screens/signup/widgets/term_and_conditions.dart';
 import 'package:lively/utils/constants/sizes.dart';
 import 'package:lively/utils/constants/text_string.dart';
+import 'package:lively/utils/validators/validation.dart';
 
 class SignupForm extends StatelessWidget {
   const SignupForm({super.key});
@@ -13,8 +14,10 @@ class SignupForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final SignupController signupController = Get.put(SignupController());
+    final formKey = GlobalKey<FormState>();
 
     return Form(
+      key: formKey,
       child: Column(
         children: [
           // First Name & Last Name
@@ -22,7 +25,7 @@ class SignupForm extends StatelessWidget {
             children: [
               Expanded(
                 child: TextFormField(
-                  expands: false,
+                  controller: signupController.firstNameController,
                   decoration: const InputDecoration(
                     labelText: REYTexts.firstName,
                     prefixIcon: Icon(Iconsax.user),
@@ -32,7 +35,7 @@ class SignupForm extends StatelessWidget {
               const SizedBox(width: REYSizes.spaceBtwInputFields),
               Expanded(
                 child: TextFormField(
-                  expands: false,
+                  controller: signupController.lastNameController,
                   decoration: const InputDecoration(
                     labelText: REYTexts.lastName,
                     prefixIcon: Icon(Iconsax.user),
@@ -45,7 +48,7 @@ class SignupForm extends StatelessWidget {
 
           // Username
           TextFormField(
-            expands: false,
+            controller: signupController.usernameController,
             decoration: const InputDecoration(
               labelText: REYTexts.username,
               prefixIcon: Icon(Iconsax.user_edit),
@@ -53,9 +56,63 @@ class SignupForm extends StatelessWidget {
           ),
           const SizedBox(height: REYSizes.spaceBtwInputFields),
 
+          // Gender Dropdown
+          Obx(
+            () => DropdownButtonFormField<String>(
+              value:
+                  signupController.selectedGender.value.isEmpty
+                      ? null
+                      : signupController.selectedGender.value,
+              items: const [
+                DropdownMenuItem(value: 'Male', child: Text('Male')),
+                DropdownMenuItem(value: 'Female', child: Text('Female')),
+              ],
+              onChanged: signupController.setGender,
+              decoration: const InputDecoration(
+                labelText: REYTexts.gender,
+                prefixIcon: Icon(Iconsax.user_tag),
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please select your gender.';
+                }
+                return null;
+              },
+            ),
+          ),
+          const SizedBox(height: REYSizes.spaceBtwInputFields),
+
+          // Birthdate with Calendar Picker
+          Obx(
+            () => TextFormField(
+              readOnly: true,
+              onTap: signupController.pickBirthDate,
+              controller: TextEditingController(
+                text:
+                    signupController.selectedBirthDate.value != null
+                        ? DateFormat(
+                          'yyyy-MM-dd',
+                        ).format(signupController.selectedBirthDate.value!)
+                        : '',
+              ),
+              decoration: const InputDecoration(
+                labelText: REYTexts.birthDate,
+                prefixIcon: Icon(Iconsax.calendar_1),
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please select your birthdate.';
+                }
+                return null;
+              },
+            ),
+          ),
+          const SizedBox(height: REYSizes.spaceBtwInputFields),
+
           // Email
           TextFormField(
-            expands: false,
+            controller: signupController.emailController,
+            validator: REYValidator.validateEmail,
             decoration: const InputDecoration(
               labelText: REYTexts.email,
               prefixIcon: Icon(Iconsax.direct),
@@ -63,21 +120,12 @@ class SignupForm extends StatelessWidget {
           ),
           const SizedBox(height: REYSizes.spaceBtwInputFields),
 
-          // Phone Number
-          TextFormField(
-            expands: false,
-            decoration: const InputDecoration(
-              labelText: REYTexts.phoneNo,
-              prefixIcon: Icon(Iconsax.call),
-            ),
-          ),
-          const SizedBox(height: REYSizes.spaceBtwInputFields),
-
           // Password
           Obx(
             () => TextFormField(
-              expands: false,
+              controller: signupController.passwordController,
               obscureText: signupController.obscurePassword.value,
+              validator: REYValidator.validatePassword,
               decoration: InputDecoration(
                 labelText: REYTexts.password,
                 prefixIcon: const Icon(Iconsax.password_check),
@@ -102,7 +150,11 @@ class SignupForm extends StatelessWidget {
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: () => Get.to(const VerifyEmailScreen()),
+              onPressed: () async {
+                if (formKey.currentState!.validate()) {
+                  await signupController.signup();
+                }
+              },
               child: const Text(REYTexts.createAccount),
             ),
           ),

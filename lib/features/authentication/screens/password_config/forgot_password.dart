@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:lively/features/authentication/controllers/forgot_password_controller.dart';
 import 'package:lively/features/authentication/screens/password_config/reset_password.dart';
 import 'package:lively/utils/constants/sizes.dart';
 import 'package:lively/utils/constants/text_string.dart';
@@ -10,6 +11,11 @@ class ForgotPasswordScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ForgotPasswordController controller = Get.put(
+      ForgotPasswordController(),
+    );
+    final TextEditingController emailController = TextEditingController();
+
     return Scaffold(
       appBar: AppBar(),
       body: SingleChildScrollView(
@@ -32,6 +38,7 @@ class ForgotPasswordScreen extends StatelessWidget {
 
               // TextFields
               TextFormField(
+                controller: emailController,
                 decoration: const InputDecoration(
                   labelText: REYTexts.email,
                   prefixIcon: Icon(Iconsax.direct_right),
@@ -43,7 +50,11 @@ class ForgotPasswordScreen extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () => Get.off(const ResetPasswordScreen()),
+                  onPressed: () {
+                    final email = emailController.text;
+                    controller.forgotPassword(email);
+                    Get.off(() => ResetPasswordScreen(email: email));
+                  },
                   child: const Text(REYTexts.submit),
                 ),
               ),

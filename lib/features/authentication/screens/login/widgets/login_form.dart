@@ -4,10 +4,10 @@ import 'package:iconsax/iconsax.dart';
 import 'package:lively/features/authentication/controllers/login_controller.dart';
 import 'package:lively/features/authentication/screens/password_config/forgot_password.dart';
 import 'package:lively/features/authentication/screens/signup/signup.dart';
-import 'package:lively/features/monitoring/screens/monitoring.dart';
 import 'package:lively/utils/constants/colors.dart';
 import 'package:lively/utils/constants/sizes.dart';
 import 'package:lively/utils/constants/text_string.dart';
+import 'package:lively/utils/validators/validation.dart';
 
 class LoginForm extends StatelessWidget {
   const LoginForm({super.key});
@@ -15,11 +15,13 @@ class LoginForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final LoginController loginController = Get.put(LoginController());
+    final formKey = GlobalKey<FormState>();
     final TextEditingController emailController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
 
     return Obx(
       () => Form(
+        key: formKey,
         child: Padding(
           padding: const EdgeInsets.symmetric(
             vertical: REYSizes.spaceBtwSections,
@@ -29,17 +31,20 @@ class LoginForm extends StatelessWidget {
               // Email
               TextFormField(
                 controller: emailController,
+                validator: REYValidator.validateEmail,
                 decoration: const InputDecoration(
                   prefixIcon: Icon(Iconsax.direct_right),
                   labelText: REYTexts.email,
                 ),
               ),
+
               const SizedBox(height: REYSizes.spaceBtwInputFields),
 
               // Password
               TextFormField(
                 controller: passwordController,
                 obscureText: loginController.obscurePassword.value,
+                validator: REYValidator.validatePassword,
                 decoration: InputDecoration(
                   prefixIcon: const Icon(Iconsax.password_check),
                   labelText: REYTexts.password,
@@ -86,8 +91,21 @@ class LoginForm extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () => Get.to(const MonitoringScreen()),
-                  child: const Text(REYTexts.signIn),
+                  onPressed:
+                      loginController.isLoading.value
+                          ? null
+                          : () {
+                            if (formKey.currentState!.validate()) {
+                              loginController.loginWithEmail(
+                                emailController.text,
+                                passwordController.text,
+                              );
+                            }
+                          },
+                  child:
+                      loginController.isLoading.value
+                          ? const CircularProgressIndicator()
+                          : const Text(REYTexts.signIn),
                 ),
               ),
               const SizedBox(height: REYSizes.spaceBtwItems),
@@ -107,3 +125,5 @@ class LoginForm extends StatelessWidget {
     );
   }
 }
+              // Create Account Button
+

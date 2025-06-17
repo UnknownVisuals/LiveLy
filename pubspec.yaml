@@ -16,6 +16,9 @@ dependencies:
   iconsax: ^0.0.8
   firebase_core: ^3.14.0
   firebase_database: ^11.3.7
+  firebase_auth: ^5.6.0
+  cloud_firestore: ^5.6.9
+  get_storage: ^2.1.1
 
 dev_dependencies:
   flutter_test:

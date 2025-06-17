@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:lively/features/authentication/screens/login/login.dart';
+import 'package:lively/features/authentication/controllers/login_controller.dart';
 import 'package:lively/features/monitoring/controllers/monitoring_controller.dart';
 import 'package:lively/features/monitoring/screens/widgets/monitoring_card.dart';
 import 'package:lively/utils/constants/image_string.dart';
@@ -14,6 +14,7 @@ class MonitoringScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(MonitoringController());
+    final loginController = Get.find<LoginController>();
 
     return Scaffold(
       appBar: AppBar(
@@ -23,7 +24,27 @@ class MonitoringScreen extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () => Get.offAll(const LoginScreen()),
+            onPressed: () {
+              Get.dialog(
+                AlertDialog(
+                  title: const Text('Logout Confirmation'),
+                  content: const Text('Are you sure you want to log out?'),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Get.back(),
+                      child: const Text('Cancel'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Get.back();
+                        loginController.logout();
+                      },
+                      child: const Text('Logout'),
+                    ),
+                  ],
+                ),
+              );
+            },
             icon: const Icon(Iconsax.logout),
           ),
         ],

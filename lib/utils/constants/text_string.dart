@@ -29,6 +29,9 @@ class REYTexts {
   static const String resendEmail = "Resend Email";
   static const String resendEmailIn = "Resend email in";
 
+  static const String gender = "Gender";
+  static const String birthDate = "Birth Date";
+
   // -- Authentication Headings
   static const String loginTitle = "Welcome Back!";
   static const String loginSubTitle =

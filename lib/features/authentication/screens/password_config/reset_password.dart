@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lively/features/authentication/controllers/forgot_password_controller.dart';
 import 'package:lively/features/authentication/screens/login/login.dart';
 import 'package:lively/utils/constants/image_string.dart';
 import 'package:lively/utils/constants/sizes.dart';
@@ -8,10 +9,16 @@ import 'package:lively/utils/constants/text_string.dart';
 import 'package:lively/utils/helpers/helper_functions.dart';
 
 class ResetPasswordScreen extends StatelessWidget {
-  const ResetPasswordScreen({super.key});
+  final String email;
+
+  const ResetPasswordScreen({super.key, required this.email});
 
   @override
   Widget build(BuildContext context) {
+    final ForgotPasswordController controller = Get.put(
+      ForgotPasswordController(),
+    );
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -60,7 +67,9 @@ class ResetPasswordScreen extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: OutlinedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    controller.sendPasswordResetEmail(email);
+                  },
                   child: const Text(REYTexts.resendEmail),
                 ),
               ),
