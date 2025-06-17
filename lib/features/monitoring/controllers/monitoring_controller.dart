@@ -3,25 +3,22 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:lively/features/monitoring/models/monitoring_model.dart';
+import 'package:lively/utils/popups/snackbar.dart';
 
 class MonitoringController extends GetxController {
-  // Observable variables
   final Rx<MonitoringModel> _data = MonitoringModel().obs;
   final RxBool _isLoading = true.obs;
   final RxString _error = ''.obs;
 
-  // Firebase
   final DatabaseReference _ref = FirebaseDatabase.instance.ref(
     'tekanan_darah/latest',
   );
   StreamSubscription<DatabaseEvent>? _subscription;
 
-  // Getters
   MonitoringModel get data => _data.value;
   bool get isLoading => _isLoading.value;
   String get error => _error.value;
 
-  // Cards data for UI
   List<Map<String, dynamic>> get cards => [
     {
       'icon': Iconsax.activity,
@@ -72,11 +69,19 @@ class MonitoringController extends GetxController {
         } else {
           _error.value = 'No data found';
           _isLoading.value = false;
+          REYLoaders.warningSnackBar(
+            title: 'Warning',
+            message: 'No monitoring data found.',
+          );
         }
       },
       onError: (error) {
         _error.value = error.toString();
         _isLoading.value = false;
+        REYLoaders.errorSnackBar(
+          title: 'Error',
+          message: 'Failed to load monitoring data.',
+        );
       },
     );
   }

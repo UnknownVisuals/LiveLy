@@ -45,7 +45,6 @@ class LoginController extends GetxController {
         );
 
         if (userCredential.user != null) {
-          // Store user data if remember me is checked
           if (rememberMe.value) {
             _storage.write('email', email);
             _storage.write('password', password);

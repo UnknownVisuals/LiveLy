@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lively/common/form_divider.dart';
-import 'package:lively/common/social_button.dart';
 import 'package:lively/features/authentication/screens/signup/widgets/signup_form.dart';
 import 'package:lively/utils/constants/colors.dart';
 import 'package:lively/utils/constants/sizes.dart';
@@ -38,11 +36,11 @@ class SignupScreen extends StatelessWidget {
               const SizedBox(height: REYSizes.spaceBtwSections),
 
               // Divider
-              REYFormDivider(dividerText: REYTexts.orSignUpWith.capitalize!),
-              const SizedBox(height: REYSizes.spaceBtwSections),
+              // REYFormDivider(dividerText: REYTexts.orSignUpWith.capitalize!),
+              // const SizedBox(height: REYSizes.spaceBtwSections),
 
               // Signup with Socials
-              const REYSocialButtons(),
+              // const REYSocialButtons(),
             ],
           ),
         ),

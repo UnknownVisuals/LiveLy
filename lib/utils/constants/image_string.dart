@@ -1,6 +1,6 @@
 class REYImages {
   // -- App Logos
-  static const String logo = "assets/logos/lively_logo.png";
+  static const String logo = "assets/logos/lively_logo_color.png";
 
   // -- Social Logos
   static const String google = "assets/logos/google_icon.png";

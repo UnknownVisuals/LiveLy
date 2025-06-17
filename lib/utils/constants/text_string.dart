@@ -51,5 +51,5 @@ class REYTexts {
   static const String yourAccountCreatedTitle =
       "Your account has been created!";
   static const String yourAccountCreatedSubTitle =
-      "Welcome to your ultimate shopping destination: Your account has been created, enjoy the excitement of seamless online shopping!";
+      "Welcome to LiveLy: Your account has been created, enjoy the real-time vitals signs monitoring!";
 }

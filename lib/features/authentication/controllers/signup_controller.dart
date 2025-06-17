@@ -3,7 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lively/features/authentication/models/user_model.dart';
-import 'package:lively/features/authentication/screens/signup/verify_email.dart';
+import 'package:lively/features/authentication/screens/login/login.dart';
+import 'package:lively/features/authentication/screens/signup/succress_screen.dart';
+import 'package:lively/utils/constants/image_string.dart';
+import 'package:lively/utils/constants/text_string.dart';
 import 'package:lively/utils/popups/snackbar.dart';
 
 class SignupController extends GetxController {
@@ -60,7 +63,6 @@ class SignupController extends GetxController {
         gender: selectedGender.value,
         birthDate: selectedBirthDate.value!,
         email: emailController.text,
-        password: passwordController.text,
       );
 
       await _firestore
@@ -68,7 +70,14 @@ class SignupController extends GetxController {
           .doc(userCredential.user!.uid)
           .set(user.toJson());
 
-      Get.to(const VerifyEmailScreen());
+      Get.to(
+        SuccessScreen(
+          image: REYImages.staticSuccessIllustration,
+          title: REYTexts.yourAccountCreatedTitle,
+          subTitle: REYTexts.yourAccountCreatedSubTitle,
+          onPressed: () => Get.offAll(const LoginScreen()),
+        ),
+      );
     } catch (e) {
       REYLoaders.errorSnackBar(title: 'Signup Error', message: e.toString());
     }

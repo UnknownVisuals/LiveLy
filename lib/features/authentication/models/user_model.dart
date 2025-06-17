@@ -5,7 +5,6 @@ class UserModel {
   final String gender;
   final DateTime birthDate;
   final String email;
-  final String password;
 
   UserModel({
     required this.firstName,
@@ -14,7 +13,6 @@ class UserModel {
     required this.gender,
     required this.birthDate,
     required this.email,
-    required this.password,
   });
 
   Map<String, dynamic> toJson() {
@@ -25,7 +23,6 @@ class UserModel {
       'gender': gender,
       'birthDate': birthDate.toIso8601String(),
       'email': email,
-      'password': password,
     };
   }
 
@@ -37,7 +34,6 @@ class UserModel {
       gender: json['gender'],
       birthDate: DateTime.parse(json['birthDate']),
       email: json['email'],
-      password: json['password'],
     );
   }
 }
