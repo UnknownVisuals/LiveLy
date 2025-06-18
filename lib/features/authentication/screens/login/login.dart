@@ -23,13 +23,6 @@ class LoginScreen extends StatelessWidget {
 
             // Forms
             LoginForm(),
-
-            // Divider
-            // REYFormDivider(dividerText: REYTexts.orSignInWith.capitalize!),
-            // const SizedBox(height: REYSizes.spaceBtwSections),
-
-            // Signin with Socials
-            // const REYSocialButtons(),
           ],
         ),
       ),

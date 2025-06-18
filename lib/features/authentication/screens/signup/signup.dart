@@ -34,13 +34,6 @@ class SignupScreen extends StatelessWidget {
               // Form Fields
               const SignupForm(),
               const SizedBox(height: REYSizes.spaceBtwSections),
-
-              // Divider
-              // REYFormDivider(dividerText: REYTexts.orSignUpWith.capitalize!),
-              // const SizedBox(height: REYSizes.spaceBtwSections),
-
-              // Signup with Socials
-              // const REYSocialButtons(),
             ],
           ),
         ),

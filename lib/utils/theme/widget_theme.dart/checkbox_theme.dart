@@ -26,25 +26,4 @@ class REYCheckboxTheme {
       }
     }),
   );
-
-  /// Customizable Dark Text Theme
-  static CheckboxThemeData darkCheckboxTheme = CheckboxThemeData(
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(REYSizes.xs),
-    ),
-    checkColor: WidgetStateProperty.resolveWith((states) {
-      if (states.contains(WidgetState.selected)) {
-        return REYColors.white;
-      } else {
-        return REYColors.black;
-      }
-    }),
-    fillColor: WidgetStateProperty.resolveWith((states) {
-      if (states.contains(WidgetState.selected)) {
-        return REYColors.primary;
-      } else {
-        return Colors.transparent;
-      }
-    }),
-  );
 }
