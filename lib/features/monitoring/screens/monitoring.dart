@@ -40,6 +40,7 @@ class MonitoringScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Title Section
                 Text(
                   REYTexts.dashboardTitle,
                   style: Theme.of(context).textTheme.headlineMedium,

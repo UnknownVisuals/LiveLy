@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:lively/features/monitoring/models/monitoring_model.dart';
 import 'package:lively/utils/popups/snackbar.dart';
 
@@ -18,25 +17,25 @@ class MonitoringController extends GetxController {
 
   List<Map<String, dynamic>> get cards => [
     {
-      'icon': Iconsax.activity,
+      'icon': Icons.favorite,
       'value': data.value.heartRateString,
       'unit': 'bpm',
       'label': 'Heart Rate',
     },
     {
-      'icon': Iconsax.heart_circle,
+      'icon': Icons.bloodtype,
       'value': data.value.bloodPressure,
       'unit': 'mmHg',
       'label': 'Blood Pressure',
     },
     {
-      'icon': Iconsax.cloud,
+      'icon': Icons.water_drop,
       'value': data.value.oxygenSaturationString,
       'unit': '%',
-      'label': 'Oxygen',
+      'label': 'SpO\u2082',
     },
     {
-      'icon': Iconsax.sun,
+      'icon': Icons.thermostat,
       'value': data.value.temperatureString,
       'unit': '°C',
       'label': 'Temperature',
@@ -71,14 +70,14 @@ class MonitoringController extends GetxController {
           isLoading.value = false;
           error.value = '';
 
-          checkVitals(
-            Get.context!,
-            data.value.temperature ?? 0,
-            data.value.heartRate?.toInt() ?? 0,
-            data.value.oxygenSaturation?.toInt() ?? 0,
-            data.value.systolicBP?.toInt() ?? 0,
-            data.value.diastolicBP?.toInt() ?? 0,
-          );
+          // checkVitals(
+          //   Get.context!,
+          //   data.value.temperature ?? 0,
+          //   data.value.heartRate?.toInt() ?? 0,
+          //   data.value.oxygenSaturation?.toInt() ?? 0,
+          //   data.value.systolicBP?.toInt() ?? 0,
+          //   data.value.diastolicBP?.toInt() ?? 0,
+          // );
         } else {
           error.value = 'No data found';
           isLoading.value = false;
